@@ -38,18 +38,18 @@ public class App
 
 	private static void signOut(WebDriver driver) {
 		Actions a= new Actions(driver);
-		a.moveToElement(driver.findElement(By.xpath("//div[@id='nav-tools']/a[2]/span[1]"))).build().perform();
-		driver.findElement(By.xpath("//*[@id='nav-item-signout']")).click();
+		a.moveToElement(driver.findElement(By.xpath("//div[@id='nav-tools']/child::a[2]/span[1]"))).build().perform();
+		driver.findElement(By.linkText("Sign Out")).click();
 		driver.close();
 	}
 
 	private static void filterSetting(WebDriver driver) throws InterruptedException {
-		driver.findElement(By.xpath("//*[@id='p_76/1249134011']/span/a/div[1]/label/i")).click();
-		Assert.assertTrue(driver.findElement(By.xpath("//*[@id='p_76/1249134011']/span/a/div[1]/label/input")).isEnabled());
-		driver.findElement(By.xpath("//*[@id='p_72/1248876011']/span/a/section")).click();
-		Assert.assertTrue(driver.findElement(By.xpath("//*[@id='p_72/1248876011']/span/a/section")).isEnabled());
+		driver.findElement(By.xpath("//*[@id='p_76/1249134011']/descendant::i")).click();
+		Assert.assertTrue(driver.findElement(By.xpath("//*[@id='p_76/1249134011']/descendant::input")).isEnabled());
+		driver.findElement(By.xpath("//*[@id='p_72/1248876011']/descendant::section")).click();
+		Assert.assertTrue(driver.findElement(By.xpath("//*[@id='p_72/1248876011']/descendant::section")).isEnabled());
 		
-		List<WebElement> hairFilter = driver.findElements(By.xpath("//div[@id='filters']/ul[1]/li"));
+		List<WebElement> hairFilter = driver.findElements(By.xpath("//div[@id='filters']/child::ul[1]/li"));
 		hairFilter.iterator().forEachRemaining(item->{
 			if(item.getText().toLowerCase().equalsIgnoreCase("dry")) {
 				item.click();
@@ -69,8 +69,8 @@ public class App
 
 	private static void signinMethod(WebDriver driver) {
 		Actions a= new Actions(driver);
-		a.moveToElement(driver.findElement(By.xpath("//div[@id='nav-tools']/a[2]/span[1]"))).build().perform();
-		driver.findElement(By.xpath("//div[@id='nav-flyout-ya-signin']/a")).click();
+		a.moveToElement(driver.findElement(By.xpath("//div[@id='nav-tools']/child::a[2]/span[1]"))).build().perform();
+		driver.findElement(By.xpath("//div[@id='nav-flyout-ya-signin']/child::a")).click();
 //		System.out.println(driver.findElement(By.xpath("//a[@id='login_accordion_header']/i")).getClass().toString());
 //		Assert.assertTrue(driver.findElement(By.xpath("//a[@id='login_accordion_header']/i")).getClass().toString().contains("a-icon-radio-active"));
 		driver.findElement(By.id("ap_email")).sendKeys("grkarthikagr@yahoo.com");
