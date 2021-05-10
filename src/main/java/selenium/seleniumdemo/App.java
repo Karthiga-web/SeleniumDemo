@@ -71,8 +71,6 @@ public class App
 		Actions a= new Actions(driver);
 		a.moveToElement(driver.findElement(By.xpath("//div[@id='nav-tools']/child::a[2]/span[1]"))).build().perform();
 		driver.findElement(By.xpath("//div[@id='nav-flyout-ya-signin']/child::a")).click();
-//		System.out.println(driver.findElement(By.xpath("//a[@id='login_accordion_header']/i")).getClass().toString());
-//		Assert.assertTrue(driver.findElement(By.xpath("//a[@id='login_accordion_header']/i")).getClass().toString().contains("a-icon-radio-active"));
 		driver.findElement(By.id("ap_email")).sendKeys("grkarthikagr@yahoo.com");
 		driver.findElement(By.id("continue")).click();
 		driver.findElement(By.id("ap_password")).sendKeys("123456789");
