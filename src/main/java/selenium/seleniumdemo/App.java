@@ -1,6 +1,5 @@
 package selenium.seleniumdemo;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -24,7 +23,6 @@ public class App {
 		System.setProperty("webdriver.chrome.driver",
 				"C:\\Users\\grkar\\OneDrive\\Documents\\Selenium\\chromedriver_win32\\chromedriver.exe");
 		WebDriver driver = new ChromeDriver();
-		driver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
 		WebDriverWait wait = new WebDriverWait(driver, 6);
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		driver.navigate().to("https://www.amazon.com/");
@@ -40,7 +38,6 @@ public class App {
 		getResultItems(driver, wait);
 		cartpage(driver, wait);
 		signOut(driver);
-
 	}
 
 	private static void cartpage(WebDriver driver, WebDriverWait wait) {
@@ -170,7 +167,6 @@ public class App {
 		driver.navigate().back();
 		driver.findElement(By.id("twotabsearchtextbox")).sendKeys("Pantene Shampoo");
 		driver.findElement(By.id("twotabsearchtextbox")).sendKeys(Keys.ENTER);
-		;
 	}
 
 	private static void signinMethod(WebDriver driver) {
