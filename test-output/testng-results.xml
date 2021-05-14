@@ -1,23 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="0" failed="0" total="2" passed="2">
+<testng-results skipped="0" failed="0" total="1" passed="1">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="15535" started-at="2021-05-14T17:47:50Z" finished-at="2021-05-14T17:48:05Z">
+  <suite name="Default suite" duration-ms="20695" started-at="2021-05-14T18:27:49Z" finished-at="2021-05-14T18:28:10Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="15535" started-at="2021-05-14T17:47:50Z" finished-at="2021-05-14T17:48:05Z">
-      <class name="TestCases.HomePageTests">
-        <test-method status="PASS" signature="home()[pri:0, instance:TestCases.HomePageTests@add0edd]" name="home" duration-ms="7946" started-at="2021-05-14T10:47:50Z" finished-at="2021-05-14T10:47:57Z">
+    <test name="Default test" duration-ms="20695" started-at="2021-05-14T18:27:49Z" finished-at="2021-05-14T18:28:10Z">
+      <class name="TestCases.PageTests">
+        <test-method status="PASS" signature="home()[pri:0, instance:TestCases.PageTests@7ff95560]" name="home" duration-ms="20678" started-at="2021-05-14T11:27:49Z" finished-at="2021-05-14T11:28:10Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- home -->
-      </class> <!-- TestCases.HomePageTests -->
-      <class name="TestCases.LoginPageTests">
-        <test-method status="PASS" signature="home()[pri:0, instance:TestCases.LoginPageTests@4b44655e]" name="home" duration-ms="7577" started-at="2021-05-14T10:47:57Z" finished-at="2021-05-14T10:48:05Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- home -->
-      </class> <!-- TestCases.LoginPageTests -->
+      </class> <!-- TestCases.PageTests -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>
