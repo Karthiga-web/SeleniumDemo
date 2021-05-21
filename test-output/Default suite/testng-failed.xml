@@ -6,4 +6,13 @@
       <class name="TestCases.PageTests"/>
     </classes>
   </test> <!-- Default test -->
+  <test name="Default test(failed)" parallel="none">
+    <classes>
+      <class name="TestCases.PageTests">
+        <methods>
+          <include name="home"/>
+        </methods>
+      </class> <!-- TestCases.PageTests -->
+    </classes>
+  </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
