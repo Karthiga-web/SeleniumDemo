@@ -7,6 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import config.Constants;
+
 public class SearchShampooPage {
 	WebDriver driver;
 
@@ -29,14 +31,14 @@ public class SearchShampooPage {
 		return serachButtonClick;
 	}
 	
-	@FindBy(xpath="//*[@id='p_76/1249134011']/descendant::i")
+	@FindBy(xpath=Constants.FILTER1 + "/descendant::i")
 	WebElement filter1 ;
 	
 	public WebElement filter1() {
 		return filter1;
 	}
 	
-	@FindBy(id="//*[@id='p_76/1249134011']/descendant::input")
+	@FindBy(id=Constants.FILTER1 + "/descendant::input")
 	WebElement filter2 ;
 	
 	public WebElement filter2() {

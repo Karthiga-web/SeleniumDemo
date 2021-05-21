@@ -14,6 +14,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import config.Constants;
 import frameworkModel.HomePage;
 import frameworkModel.LoginPage;
 import frameworkModel.SearchShampooPage;
@@ -26,8 +27,8 @@ public class PageTests {
 		WebDriver driver = new ChromeDriver();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		WebDriverWait wait = new WebDriverWait(driver, 6);
-		driver.navigate().to("https://www.amazon.com/");
-		driver.manage().window().fullscreen();
+		driver.navigate().to(Constants.URL);
+//		driver.manage().window().fullscreen();
 		
 		homepage(driver);
 		loginpage(driver);
@@ -37,9 +38,9 @@ public class PageTests {
 	}
 
 	private void filterSetting(WebDriver driver, SearchShampooPage searchShampooPage, WebDriverWait wait) {
-		searchShampooPage.filter1().click();
-		wait.until(ExpectedConditions.visibilityOf(searchShampooPage.filter2()));
-		Assert.assertTrue(searchShampooPage.filter2().isEnabled());
+		searchShampooPage.filter2().click();
+//		wait.until(ExpectedConditions..visibilityOf(searchShampooPage.filter2()));
+		Assert.assertTrue(searchShampooPage.filter2().isSelected());
 		wait.until(ExpectedConditions.visibilityOf(searchShampooPage.filter3()));
 		searchShampooPage.filter3().click();
 		wait.until(ExpectedConditions.visibilityOf(searchShampooPage.filter3()));
@@ -47,7 +48,7 @@ public class PageTests {
 
 		List<WebElement> hairFilter = searchShampooPage.filter4();
 		hairFilter.iterator().forEachRemaining(item -> {
-			if (item.getText().toLowerCase().equalsIgnoreCase("dry")) {
+			if (item.getText().toLowerCase().equalsIgnoreCase(Constants.HAIR_CONDITION)) {
 				item.click();
 				Assert.assertTrue(item.isEnabled());
 			}
@@ -56,19 +57,19 @@ public class PageTests {
 
 	private void searchShampooPage(WebDriver driver, WebDriverWait wait) {
 		SearchShampooPage searchShampooPage = new SearchShampooPage(driver);
-		searchShampooPage.searchKeyword().sendKeys("Pantene Shampoo");
+		searchShampooPage.searchKeyword().sendKeys(Constants.SEARCH_KEYWORD);
 		searchShampooPage.serachButtonClick().click();
 		driver.navigate().back();
-		searchShampooPage.searchKeyword().sendKeys("Pantene Shampoo");
+		searchShampooPage.searchKeyword().sendKeys(Constants.SEARCH_KEYWORD);
 		searchShampooPage.searchKeyword().sendKeys(Keys.ENTER);
 		filterSetting(driver,searchShampooPage,wait);
 	}
 
 	private void loginpage(WebDriver driver) {
 		LoginPage loginpage = new LoginPage(driver);
-		loginpage.email().sendKeys("grkarthikagr@yahoo.com");;
+		loginpage.email().sendKeys(Constants.EMAIL);;
 		loginpage.continueClick().click();;
-		loginpage.password().sendKeys("123456789");
+		loginpage.password().sendKeys(Constants.PASSWORD);
 		loginpage.submitClick().click();
 	}
 
