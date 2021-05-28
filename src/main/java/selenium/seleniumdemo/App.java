@@ -32,10 +32,10 @@ public class App {
 		filterSetting(driver);
 		sortingResults(driver);
 		getResultItems(driver, wait);
-//		searchSamsung(driver);
-//		navigation(driver, wait);
-//		Thread.sleep(2000);
-//		getResultItems(driver, wait);
+		searchSamsung(driver);
+		navigation(driver, wait);
+		Thread.sleep(2000);
+		getResultItems(driver, wait);
 		cartpage(driver, wait);
 		signOut(driver);
 	}
