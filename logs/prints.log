@@ -1,1 +1,4 @@
 10:16:42.267 [main] ERROR TestCases.PageTests - RuntimeException on sidepopup
+11:12:45.684 [main] DEBUG TestCases.PageTests - Setting chrome driver property
+11:13:25.543 [main] ERROR TestCases.PageTests - RuntimeException on sidepopup
+11:14:16.439 [main] ERROR TestCases.PageTests - NO_SUCH_ELEMENT_EXCEPTION

@@ -20,7 +20,7 @@ public class ExcelWorkBook {
 	static double count = 0;
 
 	public void putCartData(List<Double> quantity, List<Double> price, String total) {
-		File file = new File("C:\\Users\\grkar\\OneDrive\\Documents\\Selenium\\ExcelDocs\\CartData.xlsx");
+		File file = new File("C:\\Users\\grkar\\eclipse-workspace\\seleniumdemo\\CartData.xlsx");
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		XSSFSheet sheet = workbook.createSheet("TestData");
 		if (sheet.getRow(0) == null) {
@@ -64,7 +64,7 @@ public class ExcelWorkBook {
 		// fileInputStream argument
 		String a;
 		FileInputStream fis = new FileInputStream(
-				"C:\\Users\\grkar\\OneDrive\\Documents\\Selenium\\ExcelDocs\\ExcelDriven.xlsx");
+				"C:\\Users\\grkar\\eclipse-workspace\\seleniumdemo\\ExcelDriven.xlsx");
 		XSSFWorkbook workbook = new XSSFWorkbook(fis);
 //				int sheets = workbook.getNumberOfSheets();
 //				for (int i = 0; i < sheets; i++) {
