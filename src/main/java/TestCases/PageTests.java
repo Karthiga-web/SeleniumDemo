@@ -1,6 +1,7 @@
 package TestCases;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -43,20 +44,15 @@ public class PageTests {
 		
 		homepage(driver);
 		loginpage(driver);
-//		searchShampooPage(driver,wait);
+		searchShampooPage(driver,wait);
 		
 		searchSamsung(driver);
 		navigation(driver, wait);
-		Thread.sleep(2000);
+//		Thread.sleep(2000);
 		cartpage(driver, wait);
 		signOut(driver);
 		driver.close();
 	}
-	
-//	@Test
-//	public void samsungTest() throws InterruptedException, IOException {
-//		
-//	}
 	
 	private void signOut(WebDriver driver) {
 		CartPage cartPage = new CartPage(driver);
@@ -69,10 +65,15 @@ public class PageTests {
 	private void cartpage(WebDriver driver, WebDriverWait wait) {
 		CartPage cartPage = new CartPage(driver);
 		List<WebElement> list = cartPage.cartActiveItems();
+		List<Double> quantity = new ArrayList<>(); 
+		List<Double> price = new ArrayList<>();
 		list.forEach(i -> {
 			if (i.getAttribute(Constants.ATTRIBUTE_CLASS).contains(Constants.HAS_CLASS_LIST_ITEM)) {
+				
 				System.out.println(Double.parseDouble(i.getAttribute(Constants.DATA_PRICE)));
+				quantity.add(Double.parseDouble(i.getAttribute(Constants.DATA_PRICE)));
 				System.out.println(Double.parseDouble(i.getAttribute(Constants.DATA_QUANTITY)));
+				price.add(Double.parseDouble(i.getAttribute(Constants.DATA_QUANTITY)));
 				count += Double.parseDouble(i.getAttribute(Constants.DATA_QUANTITY));
 				item += (Double.parseDouble(i.getAttribute(Constants.DATA_PRICE))
 						* Double.parseDouble(i.getAttribute(Constants.DATA_QUANTITY)));
@@ -80,26 +81,22 @@ public class PageTests {
 		});
 		
 		String total = cartPage.finalAmount().getText();
+		System.out.println(total);
 		
-		book.putCartData(list,total);
 		
 		total = total.substring(1, total.length());
 		total = total.replaceAll(Constants.TO_REMOVE_DOLLAR_COMMAS, "");
 		Assert.assertEquals(item, Double.parseDouble(total));
+		book.putCartData(quantity,price,total);
 		deleteCartItems(driver,cartPage,wait);
 	}
 
 	private void deleteCartItems(WebDriver driver, CartPage cartPage, WebDriverWait wait) {
-		List<WebElement> list = cartPage.cartActiveItems();
-//		list.forEach(item->{
-//			wait.until(ExpectedConditions.elementToBeClickable(item.findElement(By.xpath("/descendant::*[contains(@value,'Delete')]"))));
-//			item.findElement(By.xpath("/descendant::*[contains(@value,'Delete')]")).click();
-//		});
-		for(int i = 0; i < list.size();i++) {
-//			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(Constants.CART_ACTIVE_ITEMS + "/descendant::*[contains(@value,'Delete')]")));
-			driver.findElement(By.xpath(Constants.CART_ACTIVE_ITEMS + "/descendant::*[contains(@value,'Delete')]")).click();
-			list = cartPage.cartActiveItems();
-		}
+		List<WebElement> list = driver.findElements(By.xpath(Constants.CART_ACTIVE_ITEMS + "/descendant::*[contains(@value,'Delete')]"));
+		for(int i = 0; i <= list.size();i++) {
+			list.get(i).click();
+			list = driver.findElements(By.xpath(Constants.CART_ACTIVE_ITEMS + "/descendant::*[contains(@value,'Delete')]"));
+		};
 	}
 
 	private static void navigation(WebDriver driver, WebDriverWait wait) {
@@ -155,18 +152,18 @@ public class PageTests {
 		try {
 			searchShampooPage.addToCartButton().click();
 			try {
-//				wait.until(ExpectedConditions.elementToBeClickable(By.id(Constants.SIDE_SHEET_SUDDEN_POPUP)));
+				wait.until(ExpectedConditions.elementToBeClickable(By.id(Constants.SIDE_SHEET_SUDDEN_POPUP)));
 				if (cartPage.sideSheetSuddenPopup().isDisplayed()) {
 					cartPage.sideSheetSuddenPopup().click();
 				}
-//				wait.until(ExpectedConditions.elementToBeClickable(By.id(Constants.SIDE_SHEET_IN_CART_PAGE)));
+				wait.until(ExpectedConditions.elementToBeClickable(By.id(Constants.SIDE_SHEET_IN_CART_PAGE)));
 				if (cartPage.sideSheetInCartPage().isDisplayed()) {
 					cartPage.sideSheetInCartPage().click();
 				}
 			} catch (RuntimeException e) {
 				log.error("RuntimeException on sidepopup");
-//				wait.until(ExpectedConditions.elementToBeClickable(By.id(Constants.CART_CLICK_BUTTON)));
-//				searchShampooPage.cartPage().click();
+				wait.until(ExpectedConditions.elementToBeClickable(By.id(Constants.CART_CLICK_BUTTON)));
+				searchShampooPage.cartPage().click();
 			}
 			wait.until(ExpectedConditions.elementToBeClickable(By.id(Constants.CART_CLICK_BUTTON)));
 			searchShampooPage.cartPage().click();

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,37 +19,38 @@ import config.Constants;
 public class ExcelWorkBook {
 	static double count = 0;
 
-	public void putCartData(List<WebElement> list, String total) {
+	public void putCartData(List<Double> quantity, List<Double> price, String total) {
 		File file = new File("C:\\Users\\grkar\\OneDrive\\Documents\\Selenium\\ExcelDocs\\CartData.xlsx");
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		XSSFSheet sheet = workbook.createSheet("TestData");
-		if(sheet.getRow(0) == null) {
+		if (sheet.getRow(0) == null) {
 			sheet.createRow(0).createCell(0).setCellValue("Quantity");
 			sheet.getRow(0).createCell(1).setCellValue("Price");
-		}else {
+		} else {
 			sheet.getRow(0).createCell(0).setCellValue("Quantity");
 			sheet.getRow(0).createCell(1).setCellValue("Price");
 		}
 		System.out.println(sheet.getLastRowNum());
 		Iterator<Row> rows = sheet.iterator();
-		for(int i = 0; i < list.size(); i++) {
-			if(sheet.getRow(i+1) == null) {
-				sheet.createRow(i+1).createCell(0).setCellValue(Double.parseDouble(list.get(i).getAttribute(Constants.DATA_PRICE)));
-				sheet.getRow(i+1).createCell(1).setCellValue(Double.parseDouble(list.get(i).getAttribute(Constants.DATA_QUANTITY)));
-			}else {
-				sheet.getRow(i+1).createCell(0).setCellValue(Double.parseDouble(list.get(i).getAttribute(Constants.DATA_PRICE)));
-				sheet.getRow(i+1).createCell(1).setCellValue(Double.parseDouble(list.get(i).getAttribute(Constants.DATA_QUANTITY)));
+		for (int i = 0; i < price.size(); i++) {
+			System.out.println(sheet.getLastRowNum());
+			if (sheet.getRow(sheet.getLastRowNum() + 1) == null) {
+				sheet.createRow(sheet.getLastRowNum() + 1).createCell(0).setCellValue(price.get(i));
+				sheet.getRow(sheet.getLastRowNum()).createCell(1).setCellValue(quantity.get(i));
+			} else {
+				sheet.getRow(sheet.getLastRowNum() + 1).createCell(0).setCellValue(price.get(i));
+				sheet.getRow(sheet.getLastRowNum()).createCell(1).setCellValue(quantity.get(i));
 			}
-			}
-		
-		if(sheet.getRow(sheet.getLastRowNum()+1) == null) {
-			sheet.createRow(0).createCell(0).setCellValue("Total");
-			sheet.getRow(0).createCell(1).setCellValue(total);
-		}else {
-			sheet.getRow(0).createCell(0).setCellValue("Total");
-			sheet.getRow(0).createCell(1).setCellValue(total);
 		}
-		
+
+		if (sheet.getRow(sheet.getLastRowNum() + 1) == null) {
+			sheet.createRow(sheet.getLastRowNum() + 1).createCell(0).setCellValue("Total");
+			sheet.getRow(sheet.getLastRowNum()).createCell(1).setCellValue(total);
+		} else {
+			sheet.getRow(sheet.getLastRowNum() + 1).createCell(0).setCellValue("Total");
+			sheet.getRow(sheet.getLastRowNum()).createCell(1).setCellValue(total);
+		}
+
 		try {
 			FileOutputStream fos = new FileOutputStream(file);
 			workbook.write(fos);
