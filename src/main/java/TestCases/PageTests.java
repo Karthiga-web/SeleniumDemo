@@ -1,6 +1,13 @@
 package TestCases;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -18,7 +25,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Test;
 
 import config.Constants;
 import frameworkModel.CartPage;
@@ -28,12 +34,26 @@ import frameworkModel.LoginPage;
 import frameworkModel.SearchShampooPage;
 
 public class PageTests {
+	private Statement s;
+
+	public PageTests() {
+		String host = "localhost";
+		String port = "3306";
+		try {
+			Connection con = DriverManager.getConnection("jdbc:mysql://"+ host + ":" + port + "/selenium", "root", "root");
+			
+			this.s = con.createStatement();
+		}catch(SQLException e) {
+			System.out.println(e);
+		}
+	}
 	static double item = 0;
 	static double count = 0;
 	ExcelWorkBook book = new ExcelWorkBook();
 	private static Logger log = LogManager.getLogger(PageTests.class.getName());
+	
 	@Test
-	public void home() throws InterruptedException, IOException {
+	public void home() throws InterruptedException, IOException, SQLException {
 		log.debug("Setting chrome driver property");
 		System.setProperty("webdriver.chrome.driver",
 				"C:\\Users\\grkar\\OneDrive\\Documents\\Selenium\\chromedriver_win32\\chromedriver.exe");
@@ -86,7 +106,7 @@ public class PageTests {
 		
 		total = total.substring(1, total.length());
 		total = total.replaceAll(Constants.TO_REMOVE_DOLLAR_COMMAS, "");
-		Assert.assertEquals(item, Double.parseDouble(total));
+		AssertJUnit.assertEquals(item, Double.parseDouble(total));
 		book.putCartData(quantity,price,total);
 		deleteCartItems(driver,cartPage,wait);
 	}
@@ -113,9 +133,12 @@ public class PageTests {
 		getResultItems(driver,searchShampooPage, wait);
 	}
 	
-	private void searchSamsung(WebDriver driver) throws InterruptedException, IOException {
+	private void searchSamsung(WebDriver driver) throws InterruptedException, IOException, SQLException {
 		SearchShampooPage searchShampooPage = new SearchShampooPage(driver);
-		searchShampooPage.searchKeyword().sendKeys(Constants.SEARCH_KEYWORD_SAMSUNG);
+		ResultSet rs = s.executeQuery("select * from selenium.amazondemo where scenario = 2");
+		while(rs.next()) {
+			searchShampooPage.searchKeyword().sendKeys(rs.getString("search_keyword"));
+		}
 		Thread.sleep(1000);
 		searchShampooPage.searchKeyword().sendKeys(Keys.DOWN);
 		searchShampooPage.serachButtonClick().click();
@@ -183,16 +206,16 @@ public class PageTests {
 	private void sortingResults(WebDriver driver, SearchShampooPage searchShampooPage, WebDriverWait wait) {
 		Select sortDropDown = new Select(searchShampooPage.sortFilter());
 		sortDropDown.selectByValue(Constants.SORTING_ORDER);
-		Assert.assertEquals(Constants.PRICE_LOW_TO_HIGH, sortDropDown.getFirstSelectedOption().getText().toString());
+		AssertJUnit.assertEquals(Constants.PRICE_LOW_TO_HIGH, sortDropDown.getFirstSelectedOption().getText().toString());
 	}
 	private void filterSetting(WebDriver driver, SearchShampooPage searchShampooPage, WebDriverWait wait) {
 		searchShampooPage.freeCancellation().click();
 		wait.until(ExpectedConditions.visibilityOf(searchShampooPage.freeCancellation()));
-		Assert.assertTrue(searchShampooPage.freeCancellation().isEnabled());
+		AssertJUnit.assertTrue(searchShampooPage.freeCancellation().isEnabled());
 		wait.until(ExpectedConditions.visibilityOf(searchShampooPage.starRating()));
 		searchShampooPage.starRating().click();
 		wait.until(ExpectedConditions.visibilityOf(searchShampooPage.starRating()));
-		Assert.assertTrue(searchShampooPage.starRating().isEnabled());
+		AssertJUnit.assertTrue(searchShampooPage.starRating().isEnabled());
 
 		List<WebElement> hairFilter = searchShampooPage.hairCondition();
 		System.out.println(hairFilter.size());
@@ -209,23 +232,29 @@ public class PageTests {
 			}
 		});
 	}
-	private void searchShampooPage(WebDriver driver, WebDriverWait wait) throws IOException {
+	private void searchShampooPage(WebDriver driver, WebDriverWait wait) throws IOException, SQLException {
 		SearchShampooPage searchShampooPage = new SearchShampooPage(driver);
-		searchShampooPage.searchKeyword().sendKeys(book.getData("SEARCH_KEYWORD_SHAMPOO"));
-		searchShampooPage.serachButtonClick().click();
-		driver.navigate().back();
-		searchShampooPage.searchKeyword().sendKeys(book.getData("SEARCH_KEYWORD_SHAMPOO"));
+		ResultSet rs = s.executeQuery("select * from selenium.amazondemo where scenario = 1");
+		while(rs.next()) {
+			searchShampooPage.searchKeyword().sendKeys(rs.getString("search_keyword"));
+			searchShampooPage.serachButtonClick().click();
+			driver.navigate().back();
+			searchShampooPage.searchKeyword().sendKeys(rs.getString("search_keyword"));
+		}
 		searchShampooPage.searchKeyword().sendKeys(Keys.ENTER);
 		filterSetting(driver,searchShampooPage,wait);
 		sortingResults(driver,searchShampooPage,wait);
 		getResultItems(driver,searchShampooPage,wait);
 	}
-	private void loginpage(WebDriver driver) throws IOException {
+	private void loginpage(WebDriver driver) throws IOException, SQLException {
 		LoginPage loginpage = new LoginPage(driver);
-		loginpage.email().sendKeys(book.getData("EMAIL"));;
-		loginpage.continueClick().click();;
-		loginpage.password().sendKeys(book.getData("PASSWORD"));
-		loginpage.submitClick().click();
+		ResultSet rs = s.executeQuery("select * from selenium.amazondemo where scenario = 1");
+		while(rs.next()) {
+			loginpage.email().sendKeys(rs.getString("email"));;
+			loginpage.continueClick().click();;
+			loginpage.password().sendKeys(rs.getString("password"));
+			loginpage.submitClick().click();
+		}
 	}
 	private void homepage(WebDriver driver) {
 		HomePage homepage = new HomePage(driver);
